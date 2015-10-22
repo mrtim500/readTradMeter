@@ -1,2 +1,1 @@
-readTradMeter using two infrared linesensors and an Arduino nano
-Transfer the values trough a serial connection to (e.g. openwrt)
+I am using readTradMeter.ino on an Arduino nano with two infrared line sensors to count the rounds of traditional kWh meter. The values are transferred trough a serial connection to my openwrt router, where I use socat to transfer the values to my NAS. From there server.js is used to add the values to a database.
