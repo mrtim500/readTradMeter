@@ -11,10 +11,12 @@ var client = net.connect({port: 50000, host: '192.168.0.1'},
     client.setEncoding('utf8');
 
 client.on('data', function(data) {
-
+console.log('data: ' + data);
+    
+var charPos = data.indexOf('}');    
 heleTelnetString += data;
-
-if (data == '}'){
+    
+if (charPos != -1 ){
   console.log(heleTelnetString);
     
     var jsonString = JSON.parse(heleTelnetString);    
@@ -35,7 +37,10 @@ if (data == '}'){
         console.log('Connected to MySQL');
     });
 
-    var values = [jsonString.watt, (jsonString.Wh)];
+    var watt = jsonString.watt;
+    if ( watt === null ) { watt = 0};
+    
+    var values = [watt, (jsonString.Wh)];
     connection
         .query(
             'INSERT INTO kWh SET watt = ?, Wh = ?',
@@ -52,8 +57,13 @@ if (data == '}'){
     connection.end();    
     
     
-  heleTelnetString = '';    
-};    
+      heleTelnetString = '';
+      if (data.length > charPos) {
+          heleTelnetString = data.slice((charPos+1, data.length))
+      }
+    
+  }
+    
     
 });
 client.on('end', function() {
