@@ -11,7 +11,6 @@ var client = net.connect({port: 50000, host: '192.168.0.1'},
     client.setEncoding('utf8');
 
 client.on('data', function(data) {
-console.log('data: ' + data);
     
 var charPos = data.indexOf('}');    
 heleTelnetString += data;
