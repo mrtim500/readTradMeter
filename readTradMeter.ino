@@ -27,6 +27,10 @@ void loop() {
     sensorEenZwart = true;
   }
 
+  if (sensorTweeLaag > sensorTweeHoog) { //Zwart vlak gezien
+    sensorTweeZwart = true;
+  }
+
   if (sensorEenZwart == true && sensorEenLaag < sensorEenHoog ) { //Wit vlak na zwart
     sensorEenZwart = false;
 
@@ -40,13 +44,9 @@ void loop() {
 
       tijd = (millis() - vorigeTijdE);
       vorigeTijdE = millis();
-      watt = (( 3600000 / 375 ) * 1000 ) / tijd;
-      Wh = ( rondjes * 1000 ) / 375;
+      watt = (( -3600000 / 375 ) * 1000 ) / tijd;
+      Wh = ( rondjes * 12000 ) / 375; //rondjes * 12(5min x 12 = 1 uur) * 1000 / 375
     }
-  }
-
-  if (sensorTweeLaag > sensorTweeHoog) { //Zwart vlak gezien
-    sensorTweeZwart = true;
   }
 
   if (sensorTweeZwart == true && sensorTweeLaag < sensorTweeHoog ) { //Wit vlak na zwart
@@ -83,14 +83,10 @@ void loop() {
     json += "\"}";
     Serial.println(json);
 
-    delay(100);
-
     rondjes = 0;
     watt    = 0; //anders zelfde waarde indien geen rondje binnen 5 min
     Wh      = 0; //anders zelfde waarde indien geen rondje binnen 5 min
   }
 
-  delay(100);
-
+delay(100);
 }
-
